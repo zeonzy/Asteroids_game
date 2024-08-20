@@ -5,6 +5,8 @@
 import pygame # type: ignore
 from constants import *
 from player import *
+from asteroid import *
+from asteroidfield import *
 
 def main():
     #initialise
@@ -15,10 +17,18 @@ def main():
     #dt = delta time
     dt = 0
 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = updatable
+    asteroid_field = AsteroidField()
+    
+    Player.containers = (updatable, drawable)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
-    updatable = pygame.sprite.Group(player)
-    drawable = pygame.sprite.Group(player)
+
 
     #main game loop
     while True:
@@ -32,11 +42,6 @@ def main():
             update.update(dt)
         for draw in drawable:
             draw.draw(screen)
-
-
-
-        
-        
         
         pygame.display.flip()
 
