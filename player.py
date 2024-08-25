@@ -1,6 +1,5 @@
 from circleshape import *
 from shot import *
-from sys import exit
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -50,8 +49,3 @@ class Player(CircleShape):
             self.move(-dt)
         if keys[pygame.K_SPACE] and self.timer <= 0:
             self.shoot()
-        if keys[pygame.K_ESCAPE]:
-            print("Manually exited the game")
-            exit() 
-
-

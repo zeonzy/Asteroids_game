@@ -1,4 +1,5 @@
 from circleshape import *
+from score import *
 import random
 
 class Asteroid(CircleShape):
@@ -11,8 +12,19 @@ class Asteroid(CircleShape):
     def update(self, dt):
         self.position  += (self.velocity * dt)
 
-    def split(self):
+    def split(self,score):
         self.kill()
+
+        if self.radius == 3 * ASTEROID_MIN_RADIUS: #large asteroid
+            score.add_score(20)
+        elif self.radius == 2 * ASTEROID_MIN_RADIUS: # mediums asteroid
+            score.add_score(50)
+        elif self.radius ==  ASTEROID_MIN_RADIUS: # small asteroid
+            score.add_score(50)
+        else: # tbd
+            score.add_score(200)
+        
+
         if self.radius <= ASTEROID_MIN_RADIUS:
             return
         
