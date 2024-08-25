@@ -11,6 +11,7 @@ from score import *
 from sys import exit
 from lives import *
 from pulse import *
+from explosions import *
 
 def main():
     #initialise
@@ -27,6 +28,7 @@ def main():
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
     pulses = pygame.sprite.Group()
+    explosions = pygame.sprite.Group()
 
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = updatable
@@ -35,6 +37,7 @@ def main():
     Player.containers = (updatable, drawable)
     Shot.containers = (shots, updatable, drawable)
     Pulse.containers = (pulses, updatable, drawable)
+    Explosions.containers = (explosions, updatable,drawable)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
@@ -68,6 +71,8 @@ def main():
                     exit()
             for shot in shots:
                 if shot.collision_check(asteroid):
+                    explosion = Explosions(*shot.position, asteroid.radius / 2)
+
                     shot.kill()
                     asteroid.split(score)
             for pulse in pulses:

@@ -1,6 +1,7 @@
 from circleshape import *
 from shot import *
 from pulse import *
+from explosions import *
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -9,7 +10,7 @@ class Player(CircleShape):
         self.rotation = 0
         self.radius = PLAYER_RADIUS
         self.lives = PLAYER_STARTING_LIVES
-        self.shield = False
+        self.shield = False #TBD
         self.timer = 0
 
     # in the player class
@@ -38,6 +39,7 @@ class Player(CircleShape):
         self.timer = PLAYER_SHOOT_COOLDOWN
 
     def respawn(self):
+        explosion = Explosions(*self.position, self.radius * 2)
         self.lives -= 1
         self.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         pulse = Pulse(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, PLAYER_RADIUS, 200)
