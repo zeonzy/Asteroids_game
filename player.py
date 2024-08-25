@@ -1,5 +1,6 @@
 from circleshape import *
 from shot import *
+from pulse import *
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -7,6 +8,8 @@ class Player(CircleShape):
         self.position = pygame.Vector2(x, y)
         self.rotation = 0
         self.radius = PLAYER_RADIUS
+        self.lives = PLAYER_STARTING_LIVES
+        self.shield = False
         self.timer = 0
 
     # in the player class
@@ -33,6 +36,11 @@ class Player(CircleShape):
         shot = Shot(*self.position, SHOT_RADIUS)
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
         self.timer = PLAYER_SHOOT_COOLDOWN
+
+    def respawn(self):
+        self.lives -= 1
+        self.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        pulse = Pulse(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, PLAYER_RADIUS, 200)
 
     def update(self, dt):
         self.timer -= dt

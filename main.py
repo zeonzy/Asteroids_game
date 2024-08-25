@@ -9,6 +9,8 @@ from asteroid import *
 from asteroidfield import *
 from score import *
 from sys import exit
+from lives import *
+from pulse import *
 
 def main():
     #initialise
@@ -24,6 +26,7 @@ def main():
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
+    pulses = pygame.sprite.Group()
 
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = updatable
@@ -31,6 +34,8 @@ def main():
     
     Player.containers = (updatable, drawable)
     Shot.containers = (shots, updatable, drawable)
+    Pulse.containers = (pulses, updatable, drawable)
+
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     def quitgame():
@@ -53,18 +58,27 @@ def main():
             update.update(dt)
         for draw in drawable:
             draw.draw(screen)
+
         for asteroid in asteroids:
             if player.collision_check(asteroid):
-                print("Game over!")
-                return
+                if player.lives > 1:
+                    player.respawn()
+                else:
+                    print(f"Game over! You're score was: {score}")
+                    exit()
             for shot in shots:
                 if shot.collision_check(asteroid):
                     shot.kill()
                     asteroid.split(score)
+            for pulse in pulses:
+                if pulse.collision_check(asteroid):
+                    asteroid.kill()
 
-        score.show_score(screen)
 
-        pygame.display.flip()
+        score.show_score(screen) # show score text
+        show_lives(screen, player) # show lives text
+
+        pygame.display.flip() #write to screen
 
         #limit to 60 fps
         dt = clock.tick(60) / 1000
