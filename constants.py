@@ -24,5 +24,12 @@ SHOT_RADIUS = 5
 PLAYER_SHOOT_SPEED = 500
 PLAYER_SHOOT_COOLDOWN = 0.3
 
+LOOT_TIMER = 10
+# first value is total size of the loottable
+# next values are chance for that loot to drop out of the total size
+LOOT_TABLE = [1000, 
+("S", 50)
+]
+
 
 

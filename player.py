@@ -6,12 +6,12 @@ from explosions import *
 class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
-        self.position = pygame.Vector2(x, y)
         self.rotation = 0
         self.radius = PLAYER_RADIUS
         self.lives = PLAYER_STARTING_LIVES
         self.shield = False #TBD
         self.timer = 0
+        self.immortal_timer = 0
 
     # in the player class
     def triangle(self):
@@ -23,7 +23,15 @@ class Player(CircleShape):
         return [a, b, c]
     
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+
+        if self.immortal_timer > 0:
+            pygame.draw.polygon(screen, "red", self.triangle(), 2) # TBD change effect!
+        else:
+            pygame.draw.polygon(screen, "white", self.triangle(), 2)
+
+        if self.shield:
+            pygame.draw.circle(screen, "white", self.position, self.radius + 5, 1)
+            pygame.draw.circle(screen, "white", self.position, self.radius + 10, 1)
         pass
 
     def rotate(self, dt):
@@ -43,9 +51,14 @@ class Player(CircleShape):
         self.lives -= 1
         self.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         pulse = Pulse(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, PLAYER_RADIUS, 200)
+        self.immortal_timer = 0.5
 
     def update(self, dt):
-        self.timer -= dt
+        #small optimisation to make sure we only modify the timer if there's something to time
+        if self.timer >= 0:
+            self.timer -= dt
+        if self.immortal_timer >= 0:
+            self.immortal_timer -= dt
 
         keys = pygame.key.get_pressed()
 

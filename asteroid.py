@@ -1,5 +1,6 @@
 from circleshape import *
 from score import *
+from drop import *
 import random
 
 class Asteroid(CircleShape):
@@ -21,6 +22,9 @@ class Asteroid(CircleShape):
             score.add_score(50)
         elif self.radius ==  ASTEROID_MIN_RADIUS: # small asteroid
             score.add_score(50)
+            # make the smallest astroid drop random loot
+            drop_loot = Drop(*self.position, 15)
+
         else: # tbd
             score.add_score(200)
         
